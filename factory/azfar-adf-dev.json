@@ -1,0 +1,9 @@
+{
+	"name": "azfar-adf-dev",
+	"location": "westus2",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "95b2cb06-88bf-40fa-9c72-9d4e32726521",
+		"tenantId": "e45a8dcd-cacc-4155-b82e-c8d06c42d755"
+	}
+}

@@ -1,0 +1,76 @@
+{
+	"name": "WIP_Current_Season_History_Data_Quality",
+	"properties": {
+		"activities": [
+			{
+				"name": "get_latest_fixture_round",
+				"description": "",
+				"type": "Script",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "ls_azuresqldatabase",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "Query",
+							"text": "SELECT [latest_loaded_round]\nFROM [fpl_dev].[current_season_history_metadata]"
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			},
+			{
+				"name": "current_season_history_data_quality_sp",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "get_latest_fixture_round",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[current_season_history_data_quality_sp]",
+					"storedProcedureParameters": {
+						"Fixture_Round": {
+							"value": {
+								"value": "@activity('get_latest_fixture_round').output.resultSets[0].rows[0].latest_loaded_round",
+								"type": "Expression"
+							},
+							"type": "Int32"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_azuresqldatabase",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"folder": {
+			"name": "DATA_QUALITY"
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-03-18T09:02:43Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

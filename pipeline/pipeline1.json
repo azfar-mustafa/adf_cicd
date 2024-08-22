@@ -1,0 +1,65 @@
+{
+	"name": "pipeline1",
+	"properties": {
+		"activities": [
+			{
+				"name": "Ingest Date",
+				"description": "To generate ingest date",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "ingest_date",
+					"value": {
+						"value": "@formatDateTime(addHours(utcnow(), 8), 'ddMMyyyy')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Azure Function1",
+				"type": "AzureFunctionActivity",
+				"dependsOn": [
+					{
+						"activity": "Ingest Date",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"functionName": {
+						"value": "@concat('Archive_file?data_source=team_metadata&file_date=', variables('ingest_date'))",
+						"type": "Expression"
+					},
+					"method": "GET"
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_azurefunction",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"variables": {
+			"ingest_date": {
+				"type": "String",
+				"defaultValue": "11"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-08-22T02:10:00Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

@@ -1,0 +1,90 @@
+{
+	"name": "ING_FPL_API",
+	"properties": {
+		"activities": [
+			{
+				"name": "extract_main_metadata",
+				"type": "AzureFunctionActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"functionName": "Extract_main_api_1",
+					"method": "GET"
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_azurefunction",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "extract_current_season_history",
+				"type": "AzureFunctionActivity",
+				"dependsOn": [
+					{
+						"activity": "extract_main_metadata",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"functionName": "Extract_player_api_2",
+					"method": "GET"
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_azurefunction",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "archive_file",
+				"type": "AzureFunctionActivity",
+				"dependsOn": [
+					{
+						"activity": "extract_current_season_history",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"functionName": "Archive_file",
+					"method": "GET"
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_azurefunction",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"folder": {
+			"name": "RAW"
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-02-20T12:37:19Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

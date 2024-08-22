@@ -1,0 +1,88 @@
+{
+	"name": "ds_json",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_azureblobstorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "teams_metadata_08022024.json",
+				"folderPath": "teams_metadata/current/08022024",
+				"container": "bronze"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"code": {
+					"type": "integer"
+				},
+				"draw": {
+					"type": "integer"
+				},
+				"form": {
+					"type": "null"
+				},
+				"id": {
+					"type": "integer"
+				},
+				"loss": {
+					"type": "integer"
+				},
+				"name": {
+					"type": "string"
+				},
+				"played": {
+					"type": "integer"
+				},
+				"points": {
+					"type": "integer"
+				},
+				"position": {
+					"type": "integer"
+				},
+				"short_name": {
+					"type": "string"
+				},
+				"strength": {
+					"type": "integer"
+				},
+				"team_division": {
+					"type": "null"
+				},
+				"unavailable": {
+					"type": "boolean"
+				},
+				"win": {
+					"type": "integer"
+				},
+				"strength_overall_home": {
+					"type": "integer"
+				},
+				"strength_overall_away": {
+					"type": "integer"
+				},
+				"strength_attack_home": {
+					"type": "integer"
+				},
+				"strength_attack_away": {
+					"type": "integer"
+				},
+				"strength_defence_home": {
+					"type": "integer"
+				},
+				"strength_defence_away": {
+					"type": "integer"
+				},
+				"pulse_id": {
+					"type": "integer"
+				}
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
