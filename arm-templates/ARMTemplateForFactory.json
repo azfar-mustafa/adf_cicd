@@ -9,23 +9,33 @@
         },
         "ls_adls2_accountKey": {
             "type": "secureString",
-            "metadata": "Secure string for 'accountKey' of 'ls_adls2'"
+            "metadata": {
+                "description": "Secure string for 'accountKey' of 'ls_adls2'"
+            }
         },
         "ls_azureblobstorage_connectionString": {
             "type": "secureString",
-            "metadata": "Secure string for 'connectionString' of 'ls_azureblobstorage'"
+            "metadata": {
+                "description": "Secure string for 'connectionString' of 'ls_azureblobstorage'"
+            }
         },
         "ls_azurefunction_functionKey": {
             "type": "secureString",
-            "metadata": "Secure string for 'functionKey' of 'ls_azurefunction'"
+            "metadata": {
+                "description": "Secure string for 'functionKey' of 'ls_azurefunction'"
+            }
         },
         "ls_azurefunction_transfermarkt_functionKey": {
             "type": "secureString",
-            "metadata": "Secure string for 'functionKey' of 'ls_azurefunction_transfermarkt'"
+            "metadata": {
+                "description": "Secure string for 'functionKey' of 'ls_azurefunction_transfermarkt'"
+            }
         },
         "ls_azuresqldatabase_connectionString": {
             "type": "secureString",
-            "metadata": "Secure string for 'connectionString' of 'ls_azuresqldatabase'"
+            "metadata": {
+                "description": "Secure string for 'connectionString' of 'ls_azuresqldatabase'"
+            }
         },
         "ls_adls2_properties_typeProperties_url": {
             "type": "string",
