@@ -24,7 +24,6 @@ jobs:
         client-id: ${{ secrets.clientId }}
         tenant-id: ${{ secrets.tenantId }}
         subscription-id: ${{ secrets.subscriptionId }}
-        client-secret: ${{ secrets.clientSecret }}
 
     - name: Validate ARM Template
       run: |
