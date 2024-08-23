@@ -8,31 +8,31 @@
             "defaultValue": "azfar-adf-dev"
         },
         "ls_adls2_accountKey": {
-            "type": "secureString",
+            "type": "securestring",
             "metadata": {
                 "description": "Secure string for 'accountKey' of 'ls_adls2'"
             }
         },
         "ls_azureblobstorage_connectionString": {
-            "type": "secureString",
+            "type": "securestring",
             "metadata": {
                 "description": "Secure string for 'connectionString' of 'ls_azureblobstorage'"
             }
         },
         "ls_azurefunction_functionKey": {
-            "type": "secureString",
+            "type": "securestring",
             "metadata": {
                 "description": "Secure string for 'functionKey' of 'ls_azurefunction'"
             }
         },
         "ls_azurefunction_transfermarkt_functionKey": {
-            "type": "secureString",
+            "type": "securestring",
             "metadata": {
                 "description": "Secure string for 'functionKey' of 'ls_azurefunction_transfermarkt'"
             }
         },
         "ls_azuresqldatabase_connectionString": {
-            "type": "secureString",
+            "type": "securestring",
             "metadata": {
                 "description": "Secure string for 'connectionString' of 'ls_azuresqldatabase'"
             }
