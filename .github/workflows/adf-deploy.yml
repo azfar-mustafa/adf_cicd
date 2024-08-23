@@ -24,7 +24,8 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     - name: Debug Variable
-      run: echo "Resource Group: ${{ vars.AZURE_RG }}"
+      run: |
+        echo "Resource Group: ${{ vars.AZURE_RG }}"
 
 
     - name: Validate ARM Template
