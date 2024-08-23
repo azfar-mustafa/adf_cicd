@@ -4,30 +4,6 @@
     "parameters": {
         "factoryName": {
             "value": "azfar-adf-dev"
-        },
-        "ls_adls2_accountKey": {
-            "value": ""
-        },
-        "ls_azureblobstorage_connectionString": {
-            "value": ""
-        },
-        "ls_azurefunction_functionKey": {
-            "value": ""
-        },
-        "ls_azurefunction_transfermarkt_functionKey": {
-            "value": ""
-        },
-        "ls_azuresqldatabase_connectionString": {
-            "value": ""
-        },
-        "ls_adls2_properties_typeProperties_url": {
-            "value": "https://azfarsadev.dfs.core.windows.net/"
-        },
-        "ls_azurefunction_properties_typeProperties_functionAppUrl": {
-            "value": "https://fantasy-premier-league.azurewebsites.net"
-        },
-        "ls_azurefunction_transfermarkt_properties_typeProperties_functionAppUrl": {
-            "value": "https://transfermarkt-dev.azurewebsites.net"
         }
     }
 }
