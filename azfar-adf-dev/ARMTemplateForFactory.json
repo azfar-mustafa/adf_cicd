@@ -6,145 +6,12 @@
 			"type": "string",
 			"metadata": "Data Factory name",
 			"defaultValue": "azfar-adf-dev"
-		},
-		"ls_azureblobstorage_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'ls_azureblobstorage'"
-		},
-		"ls_azurefunction_functionKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'functionKey' of 'ls_azurefunction'"
-		},
-		"ls_azurefunction_transfermarkt_functionKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'functionKey' of 'ls_azurefunction_transfermarkt'"
-		},
-		"ls_azuresqldatabase_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'ls_azuresqldatabase'"
-		},
-		"ls_azurefunction_properties_typeProperties_functionAppUrl": {
-			"type": "string",
-			"defaultValue": "https://fantasy-premier-league.azurewebsites.net"
-		},
-		"ls_azurefunction_transfermarkt_properties_typeProperties_functionAppUrl": {
-			"type": "string",
-			"defaultValue": "https://transfermarkt-dev.azurewebsites.net"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
-		{
-			"name": "[concat(parameters('factoryName'), '/ING_TRANSFERMARKT_API')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "extract_transfermarkt_player_data",
-						"type": "AzureFunctionActivity",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"functionName": {
-								"value": "@concat('startOrchestrator/my_orchestrator?epl_season=', string(pipeline().parameters.season))",
-								"type": "Expression"
-							},
-							"headers": {},
-							"method": "GET"
-						},
-						"linkedServiceName": {
-							"referenceName": "ls_azurefunction_transfermarkt",
-							"type": "LinkedServiceReference"
-						}
-					},
-					{
-						"name": "Until1",
-						"type": "Until",
-						"dependsOn": [
-							{
-								"activity": "extract_transfermarkt_player_data",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"expression": {
-								"value": "@not(or(equals(activity('CheckStatus').output.runtimeStatus, 'Pending'), equals(activity('CheckStatus').output.runtimeStatus, 'Running')))",
-								"type": "Expression"
-							},
-							"activities": [
-								{
-									"name": "Wait1",
-									"type": "Wait",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"waitTimeInSeconds": 30
-									}
-								},
-								{
-									"name": "CheckStatus",
-									"type": "WebActivity",
-									"dependsOn": [
-										{
-											"activity": "Wait1",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"method": "GET",
-										"headers": {},
-										"url": {
-											"value": "@activity('extract_transfermarkt_player_data').output.statusQueryGetUri",
-											"type": "Expression"
-										}
-									}
-								}
-							],
-							"timeout": "0.12:00:00"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"parameters": {
-					"season": {
-						"type": "string"
-					}
-				},
-				"folder": {
-					"name": "RAW"
-				},
-				"annotations": [],
-				"lastPublishTime": "2024-05-23T08:34:02Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_azurefunction_transfermarkt')]"
-			]
-		},
 		{
 			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
@@ -168,38 +35,6 @@
 								"type": "Expression"
 							}
 						}
-					},
-					{
-						"name": "Azure Function1",
-						"type": "AzureFunctionActivity",
-						"dependsOn": [
-							{
-								"activity": "Ingest Date",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"functionName": {
-								"value": "@concat('Archive_file?data_source=team_metadata&file_date=', variables('ingest_date'))",
-								"type": "Expression"
-							},
-							"headers": {},
-							"method": "GET"
-						},
-						"linkedServiceName": {
-							"referenceName": "ls_azurefunction",
-							"type": "LinkedServiceReference"
-						}
 					}
 				],
 				"policy": {
@@ -213,70 +48,6 @@
 				},
 				"annotations": [],
 				"lastPublishTime": "2024-08-22T02:10:00Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_azurefunction')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ls_azureblobstorage')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobStorage",
-				"typeProperties": {
-					"connectionString": "[parameters('ls_azureblobstorage_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ls_azurefunction')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureFunction",
-				"typeProperties": {
-					"functionAppUrl": "[parameters('ls_azurefunction_properties_typeProperties_functionAppUrl')]",
-					"authentication": "Anonymous",
-					"functionKey": {
-						"type": "SecureString",
-						"value": "[parameters('ls_azurefunction_functionKey')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ls_azurefunction_transfermarkt')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureFunction",
-				"typeProperties": {
-					"functionAppUrl": "[parameters('ls_azurefunction_transfermarkt_properties_typeProperties_functionAppUrl')]",
-					"authentication": "Anonymous",
-					"functionKey": {
-						"type": "SecureString",
-						"value": "[parameters('ls_azurefunction_transfermarkt_functionKey')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ls_azuresqldatabase')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"connectionString": "[parameters('ls_azuresqldatabase_connectionString')]"
-				}
 			},
 			"dependsOn": []
 		},

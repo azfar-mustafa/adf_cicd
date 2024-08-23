@@ -7,30 +7,6 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "azfar-adf-dev"
 		},
-		"ls_azureblobstorage_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'ls_azureblobstorage'"
-		},
-		"ls_azurefunction_functionKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'functionKey' of 'ls_azurefunction'"
-		},
-		"ls_azurefunction_transfermarkt_functionKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'functionKey' of 'ls_azurefunction_transfermarkt'"
-		},
-		"ls_azuresqldatabase_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'ls_azuresqldatabase'"
-		},
-		"ls_azurefunction_properties_typeProperties_functionAppUrl": {
-			"type": "string",
-			"defaultValue": "https://fantasy-premier-league.azurewebsites.net"
-		},
-		"ls_azurefunction_transfermarkt_properties_typeProperties_functionAppUrl": {
-			"type": "string",
-			"defaultValue": "https://transfermarkt-dev.azurewebsites.net"
-		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -57,24 +33,6 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
-					},
-					"ls_azureblobstorage_connectionString": {
-						"value": "[parameters('ls_azureblobstorage_connectionString')]"
-					},
-					"ls_azurefunction_functionKey": {
-						"value": "[parameters('ls_azurefunction_functionKey')]"
-					},
-					"ls_azurefunction_transfermarkt_functionKey": {
-						"value": "[parameters('ls_azurefunction_transfermarkt_functionKey')]"
-					},
-					"ls_azuresqldatabase_connectionString": {
-						"value": "[parameters('ls_azuresqldatabase_connectionString')]"
-					},
-					"ls_azurefunction_properties_typeProperties_functionAppUrl": {
-						"value": "[parameters('ls_azurefunction_properties_typeProperties_functionAppUrl')]"
-					},
-					"ls_azurefunction_transfermarkt_properties_typeProperties_functionAppUrl": {
-						"value": "[parameters('ls_azurefunction_transfermarkt_properties_typeProperties_functionAppUrl')]"
 					}
 				}
 			},
