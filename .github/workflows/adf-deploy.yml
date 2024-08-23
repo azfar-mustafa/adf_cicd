@@ -1,13 +1,3 @@
-name: Deploy ADF Pipeline
-
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-
 jobs:
   deploy:
     name: Deploy to ${{ github.ref == 'refs/heads/main' && 'Production' || 'Development' }}
@@ -23,17 +13,28 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: Debug Variable
-      run: |
-        echo "Resource Group: ${{ vars.AZURE_RG }}"
+    - name: Setup PowerShell
+      uses: microsoft/powershell@v1
 
+    - name: Modify ARM templates
+      run: |
+        pwsh -File ./scripts/replace-factory-name.ps1 -templateFile ./arm-templates/ARMTemplateForFactory.json -parameterFile ./arm-templates/ARMTemplateParametersForFactory.json
+
+    - name: Set ADF Name
+      run: |
+        if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+          echo "ADF_NAME=${{ env.PROD_ADF_NAME }}" >> $GITHUB_ENV
+        else
+          echo "ADF_NAME=${{ env.DEV_ADF_NAME }}" >> $GITHUB_ENV
+        fi
 
     - name: Validate ARM Template
       run: |
         az deployment group validate \
           --resource-group ${{ vars.AZURE_RG }} \
           --template-file arm-templates/ARMTemplateForFactory.json \
-          --parameters arm-templates/ARMTemplateParametersForFactory.json
+          --parameters arm-templates/ARMTemplateParametersForFactory.json \
+          factoryName=${{ env.ADF_NAME }}
 
     - name: Deploy ARM Template
       if: github.event_name == 'push'
@@ -41,7 +42,8 @@ jobs:
         az deployment group create \
           --resource-group ${{ vars.AZURE_RG }} \
           --template-file arm-templates/ARMTemplateForFactory.json \
-          --parameters arm-templates/ARMTemplateParametersForFactory.json
+          --parameters arm-templates/ARMTemplateParametersForFactory.json \
+          factoryName=${{ env.ADF_NAME }}
 
     - name: Azure Logout
       run: |
