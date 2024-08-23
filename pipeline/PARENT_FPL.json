@@ -18,10 +18,6 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"pipeline": {
-						"referenceName": "STG_FPL_FULL_LOAD",
-						"type": "PipelineReference"
-					},
 					"waitOnCompletion": true
 				}
 			},
