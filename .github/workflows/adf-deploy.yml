@@ -3,24 +3,45 @@ name: Deploy ADF Pipeline
 on:
   push:
     branches:
-      - main  # Triggers on push to main branch
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   deploy:
+    name: Deploy to ${{ github.ref == 'refs/heads/main' && 'Production' || 'Development' }}
+    environment: ${{ github.ref == 'refs/heads/main' && 'prd' || 'dev' }}
     runs-on: ubuntu-latest
-
+    
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
-
+    
     - name: Azure Login
       uses: azure/login@v1
       with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+        client-id: ${{ secrets.clientId }}
+        tenant-id: ${{ secrets.tenantId }}
+        subscription-id: ${{ secrets.subscriptionId }}
+        client-secret: ${{ secrets.clientSecret }}
+
+    - name: Validate ARM Template
+      run: |
+        az deployment group validate \
+          --resource-group ${{ vars.RESOURCE_GROUP }} \
+          --template-file arm-templates/ARMTemplateForFactory.json \
+          --parameters arm-templates/parameters-${{ vars.ENV_NAME }}.json
 
     - name: Deploy ARM Template
+      if: github.event_name == 'push'
       run: |
         az deployment group create \
-          --resource-group azfar-prd \
+          --resource-group ${{ vars.RESOURCE_GROUP }} \
           --template-file arm-templates/ARMTemplateForFactory.json \
-          --parameters arm-templates/prod-parameters.json
+          --parameters arm-templates/parameters-${{ vars.ENV_NAME }}.json
+
+    - name: Azure Logout
+      run: |
+        az logout
+      if: always()
