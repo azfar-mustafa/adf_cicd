@@ -21,9 +21,7 @@ jobs:
     - name: Azure Login
       uses: azure/login@v1
       with:
-        client-id: ${{ secrets.clientId }}
-        tenant-id: ${{ secrets.tenantId }}
-        subscription-id: ${{ secrets.subscriptionId }}
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     - name: Validate ARM Template
       run: |
