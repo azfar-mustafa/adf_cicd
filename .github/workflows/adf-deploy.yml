@@ -27,6 +27,13 @@ jobs:
       run: |
         echo "Resource Group: ${{ vars.AZURE_RG }}"
 
+    - name: Validate ARM template not by group
+      run: |
+        az deployment validate \
+          --location westus2 \
+          --template-file arm-templates/ARMTemplateForFactory.json
+
+
 
     - name: Validate ARM Template
       run: |
