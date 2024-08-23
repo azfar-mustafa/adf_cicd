@@ -32,7 +32,7 @@ jobs:
       run: |
         az deployment group validate \
           --resource-group ${{ vars.AZURE_RG }} \
-          --template-file arm-templates/ARMTemplateForFactory.json
+          --template-file arm-templates/ARMTemplateForFactory.json \
           --parameters arm-templates/ARMTemplateParametersForFactory.json
 
     - name: Deploy ARM Template
@@ -40,7 +40,7 @@ jobs:
       run: |
         az deployment group create \
           --resource-group ${{ vars.AZURE_RG }} \
-          --template-file arm-templates/ARMTemplateForFactory.json
+          --template-file arm-templates/ARMTemplateForFactory.json \
           --parameters arm-templates/ARMTemplateParametersForFactory.json
 
     - name: Azure Logout
