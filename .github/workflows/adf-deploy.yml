@@ -26,7 +26,7 @@ jobs:
     - name: Validate ARM Template
       run: |
         az deployment group validate \
-          --resource-group ${{ vars.RESOURCE_GROUP }} \
+          --resource-group ${{ vars.AZURE_RG }} \
           --template-file arm-templates/ARMTemplateForFactory.json \
           --parameters arm-templates/parameters-${{ vars.ENV_NAME }}.json
 
@@ -34,7 +34,7 @@ jobs:
       if: github.event_name == 'push'
       run: |
         az deployment group create \
-          --resource-group ${{ vars.RESOURCE_GROUP }} \
+          --resource-group ${{ vars.AZURE_RG }} \
           --template-file arm-templates/ARMTemplateForFactory.json \
           --parameters arm-templates/parameters-${{ vars.ENV_NAME }}.json
 
