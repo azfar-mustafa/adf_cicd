@@ -27,16 +27,14 @@ jobs:
       run: |
         az deployment group validate \
           --resource-group ${{ vars.AZURE_RG }} \
-          --template-file arm-templates/ARMTemplateForFactory.json \
-          --parameters arm-templates/parameters-${{ vars.ENVIRONMENT }}.json
+          --template-file arm-templates/ARMTemplateForFactory.json
 
     - name: Deploy ARM Template
       if: github.event_name == 'push'
       run: |
         az deployment group create \
           --resource-group ${{ vars.AZURE_RG }} \
-          --template-file arm-templates/ARMTemplateForFactory.json \
-          --parameters arm-templates/parameters-${{ vars.ENVIRONMENT }}.json
+          --template-file arm-templates/ARMTemplateForFactory.json
 
     - name: Azure Logout
       run: |
