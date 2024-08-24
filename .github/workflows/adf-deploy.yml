@@ -23,9 +23,6 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: Setup PowerShell
-      uses: actions/setup-powershell@v1
-
     - name: Modify ARM templates
       run: |
         pwsh -File ./scripts/replace-factory-name.ps1 -templateFile ./arm-templates/ARMTemplateForFactory.json -parameterFile ./arm-templates/ARMTemplateParametersForFactory.json
