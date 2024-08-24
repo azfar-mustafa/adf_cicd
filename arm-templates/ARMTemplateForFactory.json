@@ -12,8 +12,8 @@
     },
     "resources": [
         {
-            "name": "[format('{0}/{1}', concat(parameters('factoryName'), '/pipeline1'))]",
             "type": "Microsoft.DataFactory/factories/pipelines",
+            "name": "[concat(parameters('factoryName'), '/pipeline1')]",
             "apiVersion": "2018-06-01",
             "properties": {
                 "activities": [
