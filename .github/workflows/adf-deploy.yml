@@ -24,7 +24,7 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     - name: Setup PowerShell
-      uses: microsoft/powershell@v1
+      uses: actions/setup-powershell@v1
 
     - name: Modify ARM templates
       run: |
