@@ -30,9 +30,9 @@ jobs:
     - name: Set ADF Name
       run: |
         if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
-          echo "ADF_NAME=${{ env.PROD_ADF_NAME }}" >> $GITHUB_ENV
+          echo "ADF_NAME=${{ env.ADF_FACTORYNAME }}" >> $GITHUB_ENV
         else
-          echo "ADF_NAME=${{ env.DEV_ADF_NAME }}" >> $GITHUB_ENV
+          echo "ADF_NAME=${{ env.ADF_FACTORYNAME }}" >> $GITHUB_ENV
         fi
 
     - name: Validate ARM Template
